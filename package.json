@@ -1,0 +1,60 @@
+{
+  "name": "local-chat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local Windows chat app powered by your ChatGPT plan",
+  "author": "Local Chat",
+  "main": "dist-electron/main.cjs",
+  "scripts": {
+    "build": "tsc --noEmit && node scripts/build.mjs && vite build",
+    "start": "npm run build && electron .",
+    "test": "tsx --test tests/*.test.ts",
+    "package:win": "npm run build && electron-builder --win portable --x64",
+    "installer:win": "npm run build && electron-builder --win nsis --x64",
+    "smoke": "node scripts/smoke.mjs"
+  },
+  "build": {
+    "appId": "dev.localchat.desktop",
+    "productName": "Local Chat",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": "portable",
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "Local-Chat-${version}-Windows.exe",
+      "useZip": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "jose": "^6.2.12",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.63.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  }
+}
